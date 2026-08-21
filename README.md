@@ -16,12 +16,12 @@ Data tells you what's happening. Field operations need to know what to do next, 
 - **Resource and Response Planning** (`/work-orders/[id]/plan`), the scoring engine's UI. Recommended and Alternative crews shown side by side with the full breakdown, the operator picks, the system never assigns on its own.
 - **Execution and Replanning** (`/work-orders/[id]/execute`), the signature piece. Status moves Assigned → In Progress → Blocked → Complete; a blockage requires a reason before it's accepted, and the moment it's confirmed the scoring engine re-runs, excluding the crew that just got stuck, with a fresh recommended/alternative pair ready for a replan.
 - **Decision Log** (`/decisions`), a durable, append-only record of every assignment and replan: work order, crew, reasoning, decision maker, timestamp. Mirrors Meridian's Decision Register.
-- **A guided walkthrough** (`/demo`) of the PRD's ten-step Western Sydney scenario, linking each step into the real screens rather than faking a scripted run.
+- **A guided walkthrough** (`/demo`) of the ten-step Western Sydney scenario, linking each step into the real screens rather than faking a scripted run.
 - Real tests across `lib/*.test.ts` proving the logic actually does what it claims, not just eyeballed: certified crews outrank closer uncertified ones, off-shift crews are excluded outright, a blocked crew is excluded from its own recalculated recommendation, weather degrades to an explicit "unavailable" state instead of throwing, and assignment history survives a reassignment rather than being overwritten.
 
 ## What's coming next
 
-All five in-scope modules from the PRD are built, and the interface has had a proper design pass on top: press feedback on every button, toast confirmation on the actions that don't redirect, and a mount-then-animate reveal on the "report blocked" form instead of it just appearing. Nothing decorative, everything animated has a job to do.
+All five modules are built, and the interface has had a proper design pass on top: press feedback on every button, toast confirmation on the actions that don't redirect, and a mount-then-animate reveal on the "report blocked" form instead of it just appearing. Nothing decorative, everything animated has a job to do.
 
 What's left is the data layer. A Supabase project is connected to this environment, but neither project on the account has Waypoint's schema applied yet, so the in-memory runtime store (`lib/store.ts`) and the `lib/seed-data.ts` reference data are standing in for real tables. Wiring one up means running `db/schema.sql` against a project and swapping the seed-data and store functions for Supabase queries. That's a data-layer swap, not new product surface, everything above is written against plain functions that don't care where the data comes from.
 
@@ -38,7 +38,7 @@ npm install
 npm run dev
 ```
 
-Reference data (assets, crews, locations, work orders) runs against seed data in `lib/seed-data.ts`, matching the Western Sydney demo scenario in the PRD. Assignments and decisions logged during a session live in an in-memory store (`lib/store.ts`), which resets on a dev server restart, that's a documented tradeoff, not a bug. Wiring both up to Supabase means running the schema below against a project and swapping the seed-data and store functions for Supabase queries, that hasn't happened yet, not because there's no project to connect to, but because the schema hasn't been applied to one.
+Reference data (assets, crews, locations, work orders) runs against seed data in `lib/seed-data.ts`, matching the Western Sydney demo scenario. Assignments and decisions logged during a session live in an in-memory store (`lib/store.ts`), which resets on a dev server restart, that's a documented tradeoff, not a bug. Wiring both up to Supabase means running the schema below against a project and swapping the seed-data and store functions for Supabase queries, that hasn't happened yet, not because there's no project to connect to, but because the schema hasn't been applied to one.
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
