@@ -78,3 +78,34 @@ export interface Decision {
   scoreBreakdown?: ScoreBreakdown;
   createdAt: string;
 }
+
+export interface MaintenanceRecord {
+  id: string;
+  assetId: string;
+  date: string;
+  type: string;
+  notes: string;
+}
+
+export type WeatherSeverity = "normal" | "watch" | "severe";
+
+export interface WeatherSnapshot {
+  locationId: string;
+  temperatureC: number;
+  windSpeedKmh: number;
+  precipitationMm: number;
+  weatherCode: number;
+  conditionLabel: string;
+  severity: WeatherSeverity;
+  fetchedAt: string;
+}
+
+export type WeatherResult =
+  | { status: "ok"; data: WeatherSnapshot }
+  | { status: "unavailable"; reason: string };
+
+export type BlockedReason =
+  | "missing_equipment"
+  | "weather"
+  | "access_issue"
+  | "needs_specialist";

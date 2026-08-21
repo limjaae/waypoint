@@ -1,5 +1,8 @@
+import Link from "next/link";
 import { PriorityBadge, priorityBarClass } from "@/components/priority-badge";
 import { buildPriorityQueue } from "@/lib/priority-queue";
+
+export const dynamic = "force-dynamic";
 
 export default function CommandCentre() {
   const queue = buildPriorityQueue();
@@ -59,9 +62,12 @@ export default function CommandCentre() {
                 <p className="text-text-faint">Est. restoration: {restorationEstimateHours}hrs</p>
               </div>
 
-              <button className="self-start rounded border border-border bg-surface-raised px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-status-medium hover:text-status-medium sm:self-center">
+              <Link
+                href={`/work-orders/${workOrder.id}`}
+                className="self-start rounded border border-border bg-surface-raised px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-status-medium hover:text-status-medium sm:self-center"
+              >
                 Plan response
-              </button>
+              </Link>
             </div>
           </li>
         ))}

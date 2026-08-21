@@ -1,5 +1,6 @@
 import { assets, crews, locations, workOrders } from "./seed-data";
 import { scoreCrewsForWorkOrder } from "./scoring";
+import { getWorkOrderStatus } from "./store";
 import { WorkOrder } from "./types";
 
 export interface PriorityQueueItem {
@@ -17,7 +18,7 @@ export function buildPriorityQueue(): PriorityQueueItem[] {
   const locationMap = new Map(locations.map((l) => [l.id, l]));
 
   const items = workOrders
-    .filter((wo) => wo.status === "open")
+    .filter((wo) => getWorkOrderStatus(wo.id) === "open")
     .map((workOrder) => {
       const asset = assets.find((a) => a.id === workOrder.assetId);
       if (!asset) throw new Error(`No asset found for work order ${workOrder.id}`);

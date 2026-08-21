@@ -1,4 +1,4 @@
-import { Asset, Crew, Location, WorkOrder } from "./types";
+import { Asset, Crew, Location, MaintenanceRecord, WorkOrder } from "./types";
 
 // Reference data for the Western Sydney demo scenario described in the PRD.
 // Coordinates are real (roughly correct for the named suburbs); everything else
@@ -32,6 +32,49 @@ export const assets: Asset[] = [
     condition: "degraded",
     replacementCost: 90000,
     lastMaintenance: "2026-05-02",
+  },
+  {
+    id: "asset-3",
+    locationId: "loc-1",
+    name: "Circuit Breaker CB-9",
+    assetType: "circuit_breaker",
+    criticality: "medium",
+    condition: "degraded",
+    replacementCost: 62000,
+    lastMaintenance: "2026-06-20",
+  },
+];
+
+// Maintenance history per asset, most recent first. Powers the Work Order
+// Workspace's asset-history panel.
+export const maintenanceRecords: MaintenanceRecord[] = [
+  {
+    id: "maint-1",
+    assetId: "asset-1",
+    date: "2026-03-14",
+    type: "Scheduled inspection",
+    notes: "Oil temperature within range, minor corrosion noted on housing bolts, flagged for repaint.",
+  },
+  {
+    id: "maint-2",
+    assetId: "asset-1",
+    date: "2025-09-02",
+    type: "Load test",
+    notes: "Passed rated load test at 110% nameplate capacity for 30 minutes.",
+  },
+  {
+    id: "maint-3",
+    assetId: "asset-2",
+    date: "2026-05-02",
+    type: "Scheduled inspection",
+    notes: "Insulation resistance trending down on span 4, recommended re-inspection within 90 days.",
+  },
+  {
+    id: "maint-4",
+    assetId: "asset-3",
+    date: "2026-06-20",
+    type: "Fault investigation",
+    notes: "Nuisance trip investigated, no fault found, breaker mechanism showing early wear.",
   },
 ];
 
@@ -87,5 +130,16 @@ export const workOrders: WorkOrder[] = [
     customerImpact: 310,
     estimatedDurationHours: 2,
     createdAt: "2026-08-20T02:15:00Z",
+  },
+  {
+    id: "wo-1060",
+    assetId: "asset-3",
+    issueType: "Breaker trip flagged for inspection",
+    priority: "medium",
+    status: "open",
+    requiredCapability: "high_voltage_electrical",
+    customerImpact: 90,
+    estimatedDurationHours: 1.5,
+    createdAt: "2026-08-20T02:20:00Z",
   },
 ];
