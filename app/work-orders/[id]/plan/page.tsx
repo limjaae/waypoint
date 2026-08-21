@@ -13,7 +13,7 @@ export default async function PlanResponse({ params }: { params: Promise<{ id: s
   const ranking = getRankingForWorkOrder(id);
   if (!ranking) notFound();
 
-  const existingAssignment = getAssignmentForWorkOrder(id);
+  const existingAssignment = await getAssignmentForWorkOrder(id);
   const { workOrder, ranked } = ranking;
 
   const topTwo = ranked.slice(0, 2);

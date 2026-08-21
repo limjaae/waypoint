@@ -14,11 +14,13 @@ export interface PriorityQueueItem {
 
 const PRIORITY_ORDER = { critical: 0, high: 1, medium: 2, low: 3 } as const;
 
-export function buildPriorityQueue(): PriorityQueueItem[] {
+export async function buildPriorityQueue(): Promise<PriorityQueueItem[]> {
   const locationMap = new Map(locations.map((l) => [l.id, l]));
 
-  const items = workOrders
-    .filter((wo) => getWorkOrderStatus(wo.id) === "open")
+  const statuses = await Promise.all(workOrders.map((wo) => getWorkOrderStatus(wo.id)));
+  const openWorkOrders = workOrders.filter((_, index) => statuses[index] === "open");
+
+  const items = openWorkOrders
     .map((workOrder) => {
       const asset = assets.find((a) => a.id === workOrder.assetId);
       if (!asset) throw new Error(`No asset found for work order ${workOrder.id}`);

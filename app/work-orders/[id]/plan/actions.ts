@@ -24,8 +24,8 @@ export async function confirmAssignment(formData: FormData) {
   const breakdown = ranking.ranked.find((r) => r.crewId === crewId);
   if (!breakdown) throw new Error(`Crew ${crewId} is not a valid candidate for ${workOrderId}.`);
 
-  createAssignment(workOrderId, crewId);
-  logDecision({ workOrderId, crewId, decisionMaker, reasoning, scoreBreakdown: breakdown });
+  await createAssignment(workOrderId, crewId);
+  await logDecision({ workOrderId, crewId, decisionMaker, reasoning, scoreBreakdown: breakdown });
 
   revalidatePath("/");
   revalidatePath(`/work-orders/${workOrderId}`);

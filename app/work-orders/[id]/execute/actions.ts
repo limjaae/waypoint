@@ -15,17 +15,17 @@ function revalidateWorkOrder(workOrderId: string) {
 
 export async function startWork(formData: FormData) {
   const workOrderId = String(formData.get("workOrderId") ?? "");
-  const assignment = getAssignmentForWorkOrder(workOrderId);
+  const assignment = await getAssignmentForWorkOrder(workOrderId);
   if (!assignment) throw new Error(`No assignment on ${workOrderId} to start.`);
-  updateAssignmentStatus(assignment.id, "in_progress");
+  await updateAssignmentStatus(assignment.id, "in_progress");
   revalidateWorkOrder(workOrderId);
 }
 
 export async function markComplete(formData: FormData) {
   const workOrderId = String(formData.get("workOrderId") ?? "");
-  const assignment = getAssignmentForWorkOrder(workOrderId);
+  const assignment = await getAssignmentForWorkOrder(workOrderId);
   if (!assignment) throw new Error(`No assignment on ${workOrderId} to complete.`);
-  updateAssignmentStatus(assignment.id, "complete");
+  await updateAssignmentStatus(assignment.id, "complete");
   revalidateWorkOrder(workOrderId);
 }
 
@@ -37,17 +37,17 @@ export async function reportBlocked(formData: FormData) {
     throw new Error(`Invalid blocked reason: ${reason}`);
   }
 
-  const assignment = getAssignmentForWorkOrder(workOrderId);
+  const assignment = await getAssignmentForWorkOrder(workOrderId);
   if (!assignment) throw new Error(`No assignment on ${workOrderId} to block.`);
-  updateAssignmentStatus(assignment.id, "blocked", reason);
+  await updateAssignmentStatus(assignment.id, "blocked", reason);
   revalidateWorkOrder(workOrderId);
 }
 
 export async function resumeSameCrew(formData: FormData) {
   const workOrderId = String(formData.get("workOrderId") ?? "");
-  const assignment = getAssignmentForWorkOrder(workOrderId);
+  const assignment = await getAssignmentForWorkOrder(workOrderId);
   if (!assignment) throw new Error(`No assignment on ${workOrderId} to resume.`);
-  updateAssignmentStatus(assignment.id, "in_progress");
+  await updateAssignmentStatus(assignment.id, "in_progress");
   revalidateWorkOrder(workOrderId);
 }
 
@@ -65,7 +65,7 @@ export async function reassignAfterBlock(formData: FormData) {
   const breakdown = ranking?.ranked.find((r) => r.crewId === crewId);
   if (!breakdown) throw new Error(`Crew ${crewId} is not a valid candidate for ${workOrderId}.`);
 
-  reassignCrew(workOrderId, crewId);
-  logDecision({ workOrderId, crewId, decisionMaker, reasoning, scoreBreakdown: breakdown });
+  await reassignCrew(workOrderId, crewId);
+  await logDecision({ workOrderId, crewId, decisionMaker, reasoning, scoreBreakdown: breakdown });
   revalidateWorkOrder(workOrderId);
 }

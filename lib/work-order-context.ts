@@ -1,7 +1,7 @@
 import { assets, crews, locations, maintenanceRecords, workOrders } from "./seed-data";
 import { distanceKm } from "./scoring";
 import { getAssignmentForWorkOrder, getWorkOrderStatus } from "./store";
-import { Asset, Crew, Location, MaintenanceRecord, WorkOrder, WorkOrderStatus } from "./types";
+import { Asset, Assignment, Crew, Location, MaintenanceRecord, WorkOrder, WorkOrderStatus } from "./types";
 
 export interface NearbyCrew {
   crew: Crew;
@@ -23,14 +23,14 @@ export interface WorkOrderContext {
   maintenanceHistory: MaintenanceRecord[];
   nearbyCrews: NearbyCrew[];
   relatedWorkOrders: RelatedWorkOrder[];
-  currentAssignment: ReturnType<typeof getAssignmentForWorkOrder>;
+  currentAssignment: Assignment | undefined;
 }
 
 const NEARBY_RADIUS_KM = 60;
 
 /** Pulls every piece of context a work order needs: location, asset, crews
  * nearby, and any related work orders. */
-export function buildWorkOrderContext(workOrderId: string): WorkOrderContext | null {
+export async function buildWorkOrderContext(workOrderId: string): Promise<WorkOrderContext | null> {
   const workOrder = workOrders.find((wo) => wo.id === workOrderId);
   if (!workOrder) return null;
 
@@ -57,26 +57,33 @@ export function buildWorkOrderContext(workOrderId: string): WorkOrderContext | n
     .filter((entry) => entry.distanceKm <= NEARBY_RADIUS_KM)
     .sort((a, b) => a.distanceKm - b.distanceKm);
 
-  const relatedWorkOrders: RelatedWorkOrder[] = workOrders
+  const relatedCandidates = workOrders
     .filter((wo) => wo.id !== workOrder.id)
     .filter((wo) => {
       const otherAsset = assets.find((a) => a.id === wo.assetId);
       return wo.assetId === asset.id || otherAsset?.locationId === location.id;
-    })
-    .map((wo) => ({
-      workOrder: wo,
-      status: getWorkOrderStatus(wo.id),
-      relationship: wo.assetId === asset.id ? ("same_asset" as const) : ("same_location" as const),
-    }));
+    });
+
+  const [relatedStatuses, status, currentAssignment] = await Promise.all([
+    Promise.all(relatedCandidates.map((wo) => getWorkOrderStatus(wo.id))),
+    getWorkOrderStatus(workOrder.id),
+    getAssignmentForWorkOrder(workOrder.id),
+  ]);
+
+  const relatedWorkOrders: RelatedWorkOrder[] = relatedCandidates.map((wo, index) => ({
+    workOrder: wo,
+    status: relatedStatuses[index],
+    relationship: wo.assetId === asset.id ? ("same_asset" as const) : ("same_location" as const),
+  }));
 
   return {
     workOrder,
-    status: getWorkOrderStatus(workOrder.id),
+    status,
     asset,
     location,
     maintenanceHistory,
     nearbyCrews,
     relatedWorkOrders,
-    currentAssignment: getAssignmentForWorkOrder(workOrder.id),
+    currentAssignment,
   };
 }

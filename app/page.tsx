@@ -4,8 +4,8 @@ import { buildPriorityQueue } from "@/lib/priority-queue";
 
 export const dynamic = "force-dynamic";
 
-export default function CommandCentre() {
-  const queue = buildPriorityQueue();
+export default async function CommandCentre() {
+  const queue = await buildPriorityQueue();
   const criticalCount = queue.filter((q) => q.workOrder.priority === "critical").length;
 
   return (

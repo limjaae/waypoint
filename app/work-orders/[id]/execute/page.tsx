@@ -17,11 +17,11 @@ export default async function ExecutionAndReplanning({ params }: { params: Promi
   const workOrder = workOrders.find((wo) => wo.id === id);
   if (!workOrder) notFound();
 
-  const assignment = getAssignmentForWorkOrder(id);
+  const assignment = await getAssignmentForWorkOrder(id);
   if (!assignment) notFound();
 
   const crew = crews.find((c) => c.id === assignment.crewId);
-  const history = getAssignmentHistoryForWorkOrder(id);
+  const history = await getAssignmentHistoryForWorkOrder(id);
 
   const actions = { startWork, markComplete, reportBlocked, resumeSameCrew, reassignAfterBlock };
 

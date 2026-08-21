@@ -6,8 +6,8 @@ import { getDecisions } from "@/lib/store";
 // maker, timestamp. Read-only by design, this is a log, not a workflow.
 export const dynamic = "force-dynamic";
 
-export default function DecisionLog() {
-  const decisions = getDecisions();
+export default async function DecisionLog() {
+  const decisions = await getDecisions();
 
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-12 sm:px-10">

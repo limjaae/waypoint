@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 export default async function WorkOrderWorkspace({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const context = buildWorkOrderContext(id);
+  const context = await buildWorkOrderContext(id);
   if (!context) notFound();
 
   const { workOrder, status, asset, location, maintenanceHistory, nearbyCrews, relatedWorkOrders, currentAssignment } = context;
