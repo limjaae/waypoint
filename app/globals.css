@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --background: #10141a;
+  --surface: #171d26;
+  --surface-raised: #1e2530;
+  --border: #2a323e;
+  --text-primary: #e8ebf0;
+  --text-muted: #8b95a6;
+  --text-faint: #5c6577;
+
+  --status-critical: #e2574c;
+  --status-critical-dim: #3a2422;
+  --status-high: #d9a441;
+  --status-high-dim: #362c1c;
+  --status-medium: #5b84b1;
+  --status-medium-dim: #1f2a36;
+  --status-good: #5fa87c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-status-critical: var(--status-critical);
+  --color-status-critical-dim: var(--status-critical-dim);
+  --color-status-high: var(--status-high);
+  --color-status-high-dim: var(--status-high-dim);
+  --color-status-medium: var(--status-medium);
+  --color-status-medium-dim: var(--status-medium-dim);
+  --color-status-good: var(--status-good);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "IBM Plex Mono", "JetBrains Mono", Menlo, monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
