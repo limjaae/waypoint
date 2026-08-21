@@ -20,6 +20,14 @@ export default function CommandCentre() {
         <div className="text-right">
           <p className="font-mono text-2xl font-semibold text-status-critical">{criticalCount}</p>
           <p className="text-xs text-text-muted">critical, unassigned</p>
+          <div className="mt-2 flex gap-3 text-xs">
+            <Link href="/decisions" className="text-text-faint underline hover:text-text-muted">
+              Decision Log
+            </Link>
+            <Link href="/demo" className="text-text-faint underline hover:text-text-muted">
+              Demo walkthrough
+            </Link>
+          </div>
         </div>
       </header>
 
