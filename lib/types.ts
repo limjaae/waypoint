@@ -52,7 +52,7 @@ export interface Assignment {
   workOrderId: string;
   crewId: string;
   status: AssignmentStatus;
-  blockedReason?: string;
+  blockedReason?: BlockedReason;
   assignedAt: string;
   estimatedCompletion?: string;
 }
