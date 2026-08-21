@@ -10,6 +10,8 @@ interface Candidate {
   autoReasoning: string;
 }
 
+const PRESS_FEEDBACK = "active:scale-[0.97] transition-transform duration-100 motion-reduce:active:scale-100 motion-reduce:transition-none";
+
 export function PlanForm({
   workOrderId,
   candidates,
@@ -42,7 +44,7 @@ export function PlanForm({
             key={candidate.breakdown.crewId}
             type="button"
             onClick={() => handleSelect(candidate)}
-            className="text-left focus:outline-none"
+            className={`text-left focus:outline-none ${PRESS_FEEDBACK}`}
           >
             <ScoreBreakdownCard
               breakdown={candidate.breakdown}
@@ -86,7 +88,7 @@ export function PlanForm({
 
         <button
           type="submit"
-          className="self-start rounded border border-status-medium bg-status-medium-dim px-4 py-2 text-sm font-medium text-status-medium transition-colors hover:bg-status-medium hover:text-background"
+          className={`self-start rounded border border-status-medium bg-status-medium-dim px-4 py-2 text-sm font-medium text-status-medium transition-colors hover:bg-status-medium hover:text-background ${PRESS_FEEDBACK}`}
         >
           Confirm assignment
         </button>

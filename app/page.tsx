@@ -72,7 +72,7 @@ export default function CommandCentre() {
 
               <Link
                 href={`/work-orders/${workOrder.id}`}
-                className="self-start rounded border border-border bg-surface-raised px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-status-medium hover:text-status-medium sm:self-center"
+                className="self-start rounded border border-border bg-surface-raised px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-status-medium hover:text-status-medium active:scale-[0.97] motion-reduce:active:scale-100 sm:self-center"
               >
                 Plan response
               </Link>

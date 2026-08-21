@@ -141,7 +141,7 @@ export default async function WorkOrderWorkspace({ params }: { params: Promise<{
 
         <Link
           href={currentAssignment ? `/work-orders/${workOrder.id}/execute` : `/work-orders/${workOrder.id}/plan`}
-          className="rounded border border-border bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-status-medium hover:text-status-medium"
+          className="rounded border border-border bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-status-medium hover:text-status-medium active:scale-[0.97] motion-reduce:active:scale-100"
         >
           {currentAssignment ? "View execution" : "Plan response"}
         </Link>
